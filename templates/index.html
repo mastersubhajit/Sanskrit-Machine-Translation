@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sanskrit to English Translation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #dfe5ec;
+            --surface: #e6ebf2;
+            --surface-strong: #eef2f8;
+            --shadow-dark: rgba(128, 140, 154, 0.55);
+            --shadow-light: rgba(255, 255, 255, 0.9);
+            --accent: #d97706;
+            --accent-soft: rgba(217, 119, 6, 0.2);
+            --ink: #1b1f2a;
+            --muted: #54606f;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Space Grotesk", sans-serif;
+            color: var(--ink);
+            background: radial-gradient(1200px 700px at 10% 10%, #f5f8fc 0%, var(--bg) 45%, #cfd8e3 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            overflow: hidden;
+        }
+
+        #three-container {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+        }
+
+        .shell {
+            position: relative;
+            z-index: 2;
+            width: min(1100px, 96vw);
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 28px;
+        }
+
+        .panel {
+            background: var(--surface);
+            border-radius: 28px;
+            padding: 28px;
+            box-shadow:
+                18px 18px 40px var(--shadow-dark),
+                -18px -18px 36px var(--shadow-light);
+            backdrop-filter: blur(6px);
+        }
+
+        .panel.inset {
+            background: var(--surface-strong);
+            box-shadow:
+                inset 10px 10px 22px rgba(171, 181, 196, 0.5),
+                inset -10px -10px 22px rgba(255, 255, 255, 0.9);
+        }
+
+        .title {
+            font-size: clamp(28px, 3.4vw, 42px);
+            font-weight: 700;
+            margin: 0 0 10px;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            margin: 0 0 24px;
+            color: var(--muted);
+            font-size: 15px;
+        }
+
+        .chip-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .chip {
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: var(--surface);
+            box-shadow:
+                6px 6px 12px var(--shadow-dark),
+                -6px -6px 12px var(--shadow-light);
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--muted);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        textarea {
+            width: 100%;
+            border: none;
+            border-radius: 20px;
+            padding: 16px;
+            resize: vertical;
+            min-height: 180px;
+            font-family: "Noto Sans Devanagari", "Space Grotesk", sans-serif;
+            font-size: 16px;
+            background: var(--surface-strong);
+            color: var(--ink);
+            box-shadow:
+                inset 8px 8px 20px rgba(171, 181, 196, 0.55),
+                inset -8px -8px 20px rgba(255, 255, 255, 0.9);
+            outline: none;
+        }
+
+        .actions {
+            margin-top: 18px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            flex: 1 1 160px;
+            padding: 14px 18px;
+            border: none;
+            border-radius: 18px;
+            background: var(--surface);
+            color: var(--ink);
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            box-shadow:
+                10px 10px 20px var(--shadow-dark),
+                -10px -10px 20px var(--shadow-light);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        button.primary {
+            background: linear-gradient(140deg, #f8d58a, #f2b04a);
+            color: #2a1e0a;
+            box-shadow:
+                12px 12px 22px rgba(159, 102, 26, 0.35),
+                -12px -12px 22px rgba(255, 255, 255, 0.8);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        .result-card {
+            display: grid;
+            gap: 18px;
+        }
+
+        .result-block {
+            border-radius: 20px;
+            padding: 16px 18px;
+            background: var(--surface-strong);
+            box-shadow:
+                inset 10px 10px 24px rgba(171, 181, 196, 0.55),
+                inset -10px -10px 24px rgba(255, 255, 255, 0.9);
+        }
+
+        .result-title {
+            margin: 0 0 10px;
+            font-size: 14px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .result-text {
+            margin: 0;
+            font-size: 16px;
+            line-height: 1.5;
+            word-break: break-word;
+        }
+
+        .footer-note {
+            margin-top: 18px;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        @media (max-width: 980px) {
+            .shell {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="three-container"></div>
+    <main class="shell">
+        <section class="panel">
+            <h1 class="title">Sanskrit to English</h1>
+            <p class="subtitle">Neural translation powered by a seq2seq attention model.</p>
+            <div class="chip-row">
+                <span class="chip">General/Additive Attention</span>
+                <span class="chip">Neural MT</span>
+                <span class="chip">CPU Inference</span>
+            </div>
+            <form action="/translate" method="post">
+                <label for="text">Sanskrit input</label>
+                <textarea id="text" name="text" rows="6" placeholder="Enter Sanskrit text here...">{{ original_text if original_text else '' }}</textarea>
+                <div class="actions">
+                    <button class="primary" type="submit">Translate</button>
+                    <button type="button" onclick="document.getElementById('text').value = ''">Clear</button>
+                </div>
+            </form>
+            <p class="footer-note">Tip: Short, clear sentences yield the most stable translations.</p>
+        </section>
+        <section class="panel inset">
+            <div class="result-card">
+                <div class="result-block">
+                    <h2 class="result-title">Original</h2>
+                    <p class="result-text">{{ original_text if original_text else 'Awaiting input.' }}</p>
+                </div>
+                <div class="result-block">
+                    <h2 class="result-title">Translation</h2>
+                    <p class="result-text">{{ translated_text if translated_text else 'Your translation will appear here.' }}</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        const container = document.getElementById("three-container");
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
+        camera.position.z = 140;
+
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio || 1);
+        container.appendChild(renderer.domElement);
+
+        const starCount = 900;
+        const geometry = new THREE.BufferGeometry();
+        const positions = new Float32Array(starCount * 3);
+        const velocities = new Float32Array(starCount);
+
+        for (let i = 0; i < starCount; i += 1) {
+            const i3 = i * 3;
+            positions[i3] = (Math.random() - 0.5) * 520;
+            positions[i3 + 1] = (Math.random() - 0.5) * 320;
+            positions[i3 + 2] = (Math.random() - 0.5) * 300;
+            velocities[i] = 0.4 + Math.random() * 0.8;
+        }
+
+        geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+
+        const material = new THREE.PointsMaterial({
+            color: 0xe0a65e,
+            size: 1.8,
+            transparent: true,
+            opacity: 0.7
+        });
+
+        const points = new THREE.Points(geometry, material);
+        scene.add(points);
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const pos = geometry.attributes.position.array;
+            for (let i = 0; i < starCount; i += 1) {
+                const idx = i * 3 + 1;
+                pos[idx] += velocities[i] * 0.15;
+                if (pos[idx] > 180) {
+                    pos[idx] = -180;
+                }
+            }
+            geometry.attributes.position.needsUpdate = true;
+            points.rotation.y += 0.0007;
+            renderer.render(scene, camera);
+        }
+
+        function handleResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        window.addEventListener("resize", handleResize);
+        animate();
+    </script>
+</body>
+</html>
