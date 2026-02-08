@@ -1,0 +1,3 @@
+# Large model artifacts
+*.pt
+*.pkl
