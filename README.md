@@ -1,5 +1,5 @@
 # A3 - Sanskrit to English Machine Translation
-![Recognizing Textual Entailment](https://drive.google.com/uc?export=view&id=13qL12xhGZGipOf0e5_ctNq0SZ3MpdB5w)
+![Machine Translation](https://drive.google.com/uc?export=view&id=1lGygFyGhxzTnmw6D4dk-vwAyN5_mqO-N)
 
 ## Overview
 This project builds a Sanskrit-to-English neural machine translation system using a seq2seq GRU encoder-decoder with attention. Two attention mechanisms are trained and compared:
